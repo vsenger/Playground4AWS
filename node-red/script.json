@@ -1,0 +1,154 @@
+[
+    {
+        "id": "6b7f38d710e55bf4",
+        "type": "mqtt in",
+        "z": "e021e1b65bea0b79",
+        "name": "",
+        "topic": "gaming/sensor/helmet",
+        "qos": "1",
+        "datatype": "auto",
+        "broker": "b4a231d78a46bf85",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 230,
+        "y": 120,
+        "wires": [
+            [
+                "87894ab174e39346"
+            ]
+        ]
+    },
+    {
+        "id": "efadd00992f119fa",
+        "type": "debug",
+        "z": "e021e1b65bea0b79",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 610,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "6e25ada8e80afcd8",
+        "type": "tcp in",
+        "z": "e021e1b65bea0b79",
+        "name": "",
+        "server": "server",
+        "host": "",
+        "port": "9999",
+        "datamode": "stream",
+        "datatype": "buffer",
+        "newline": "",
+        "topic": "",
+        "base64": false,
+        "x": 150,
+        "y": 320,
+        "wires": [
+            [
+                "7e069c26ae9410b5",
+                "efadd00992f119fa"
+            ]
+        ]
+    },
+    {
+        "id": "7e069c26ae9410b5",
+        "type": "mqtt out",
+        "z": "e021e1b65bea0b79",
+        "name": "",
+        "topic": "control/lamp",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "b4a231d78a46bf85",
+        "x": 430,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "87894ab174e39346",
+        "type": "json",
+        "z": "e021e1b65bea0b79",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 380,
+        "y": 180,
+        "wires": [
+            [
+                "efadd00992f119fa"
+            ]
+        ]
+    },
+    {
+        "id": "fb201c09f4f75080",
+        "type": "mqtt in",
+        "z": "e021e1b65bea0b79",
+        "name": "",
+        "topic": "control/lamp",
+        "qos": "1",
+        "datatype": "auto",
+        "broker": "b4a231d78a46bf85",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 140,
+        "y": 260,
+        "wires": [
+            [
+                "efadd00992f119fa"
+            ]
+        ]
+    },
+    {
+        "id": "b4a231d78a46bf85",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "a2p4fyajwx9lux-ats.iot.us-east-1.amazonaws.com",
+        "port": "8883",
+        "tls": "b8008e4395bdac45",
+        "clientid": "",
+        "usetls": true,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "b8008e4395bdac45",
+        "type": "tls-config",
+        "name": "",
+        "cert": "/Users/vsenger/minecraft-iot/8f2b2f776911332a0fea819064421830e592b55f32c4a6262918700841fc5c32-certificate.pem.crt",
+        "key": "/Users/vsenger/minecraft-iot/8f2b2f776911332a0fea819064421830e592b55f32c4a6262918700841fc5c32-private.pem.key",
+        "ca": "/Users/vsenger/minecraft-iot/AmazonRootCA1.pem",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    }
+]
