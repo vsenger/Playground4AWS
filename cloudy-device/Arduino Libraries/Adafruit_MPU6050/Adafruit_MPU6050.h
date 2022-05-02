@@ -250,12 +250,6 @@ public:
 
   void setCycleRate(mpu6050_cycle_rate_t rate);
   mpu6050_cycle_rate_t getCycleRate(void);
-
-  bool setGyroStandby(bool xAxisStandby, bool yAxisStandby, bool zAxisStandby);
-  bool setAccelerometerStandby(bool xAxisStandby, bool yAxisStandby,
-                               bool zAxisStandby);
-  bool setTemperatureStandby(bool enable);
-
   void reset(void);
 
   Adafruit_Sensor *getTemperatureSensor(void);
