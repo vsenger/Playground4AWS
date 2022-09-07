@@ -7,17 +7,15 @@ import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.world.World;
-
-import java.util.Random;
 import org.json.JSONObject;
-public class TopicListener extends AWSIotTopic {
+public class SensorsListener extends AWSIotTopic {
 	public static double lastHumidity;
+	public static double lastTemperature;
 	// Directly reference a log4j logger.
 	private static final Logger LOGGER = LogManager.getLogger();
 	private MinecraftServer mcServer = null;
 	private String lastMessage;
-	public TopicListener(String topic, AWSIotQos qos, MinecraftServer mcServer) {
+	public SensorsListener(String topic, AWSIotQos qos, MinecraftServer mcServer) {
 		super(topic, qos);
 		this.mcServer = mcServer;
 	}
@@ -31,6 +29,7 @@ public class TopicListener extends AWSIotTopic {
 		JSONObject tomJsonObject = new JSONObject(lastMessage);
 		LOGGER.info(tomJsonObject);
 		lastHumidity = tomJsonObject.getDouble("humidity");
+		lastTemperature = tomJsonObject.getDouble("temperature");
 		LOGGER.info("humidity: " + tomJsonObject.getDouble("humidity"));
 	}
 

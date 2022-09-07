@@ -7,12 +7,10 @@ import com.amazonaws.services.iot.client.sample.sampleUtil.SampleUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -26,7 +24,6 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Random;
 import java.util.stream.Collectors;
 
 
@@ -39,12 +36,15 @@ public class ExampleMod
 
 	public static final String AWS_IOT_TOPIC = "control/lamp";
 	// public static final String AWS_IOT_ENDPOINT = "<prefix>-ats.iot.<region>.amazonaws.com";
+
 	public static final String AWS_IOT_ENDPOINT = "a2p4fyajwx9lux-ats.iot.us-east-1.amazonaws.com";
 	public static final String AWS_IOT_CLIENT_ID = "jump-mod";
-	public static final String AWS_IOT_CERTIFICATE_FILE = "/Users/vsenger/minecraft-iot/8f2b2f776911332a0fea819064421830e592b55f32c4a6262918700841fc5c32-certificate.pem.crt";
-	public static final String AWS_IOT_PRIVATE_KEY_FILE = "/Users/vsenger/minecraft-iot/8f2b2f776911332a0fea819064421830e592b55f32c4a6262918700841fc5c32-private.pem.key";
+	public static final String AWS_IOT_CERTIFICATE_FILE = "/Users/vsenger/code/minecraft-iot/9e3f90d7ca2074eb8ba38b1caf619d06d5d2c150f294a59cdb0ee5a615131090-certificate.pem.crt";
+	public static final String AWS_IOT_PRIVATE_KEY_FILE = "/Users/vsenger//code/minecraft-iot/9e3f90d7ca2074eb8ba38b1caf619d06d5d2c150f294a59cdb0ee5a615131090-private.pem.key";
 
-	private static final String AWS_IOT_INBOUND_TOPIC = "playground/sensors";
+	private static final String AWS_IOT_SENSORS = "playground/sensors";
+
+	private static final String AWS_IOT_SOUND = "playground/sound";
 	private static final AWSIotQos AWS_IOT_INBOUND_TOPIC_QOS = AWSIotQos.QOS0;
 
 	AWSIotMqttClient client = null;
@@ -77,14 +77,15 @@ public class ExampleMod
 
 		SampleUtil.KeyStorePasswordPair pair = SampleUtil.getKeyStorePasswordPair(certificateFile, privateKeyFile);
 		this.client = new AWSIotMqttClient(clientEndpoint, clientId, pair.keyStore, pair.keyPassword);
-
 		try {
 			client.connect();
 			MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
 			//currentServer.getWo
 			// https://github.com/aws/aws-iot-device-sdk-java/tree/master/aws-iot-device-sdk-java-samples/src/main/java/com/amazonaws/services/iot/client/sample/pubSub
-			AWSIotTopic topic = new TopicListener(AWS_IOT_INBOUND_TOPIC, AWS_IOT_INBOUND_TOPIC_QOS, currentServer);
-			client.subscribe(topic, true);
+			AWSIotTopic sensorsListener = new SensorsListener(AWS_IOT_SENSORS, AWS_IOT_INBOUND_TOPIC_QOS, currentServer);
+			AWSIotTopic soundListener = new SoundListener(AWS_IOT_SOUND, AWS_IOT_INBOUND_TOPIC_QOS, currentServer);
+			client.subscribe(sensorsListener, true);
+			client.subscribe(soundListener, true);
 		} catch (Exception e) {
 			LOGGER.error("Error connecting to IoT", e);
 		}
