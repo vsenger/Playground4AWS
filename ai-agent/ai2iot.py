@@ -17,9 +17,9 @@ import json
 # Define ENDPOINT, CLIENT_ID, PATH_TO_CERT, PATH_TO_KEY, PATH_TO_ROOT, MESSAGE, TOPIC, and RANGE
 ENDPOINT = "a2p4fyajwx9lux-ats.iot.us-east-1.amazonaws.com"
 CLIENT_ID = "testDevice"
-PATH_TO_CERT = "/tmp/minecraft-iot/8f2b2f776911332a0fea819064421830e592b55f32c4a6262918700841fc5c32-certificate.pem.crt"
-PATH_TO_KEY = "/tmp/minecraft-iot/8f2b2f776911332a0fea819064421830e592b55f32c4a6262918700841fc5c32-private.pem.key"
-PATH_TO_ROOT = "/tmp/minecraft-iot/AmazonRootCA1.pem"
+PATH_TO_CERT = "/Users/vsenger/Documents/minecraft-iot/8f2b2f776911332a0fea819064421830e592b55f32c4a6262918700841fc5c32-certificate.pem.crt"
+PATH_TO_KEY = "/Users/vsenger/Documents/minecraft-iot/8f2b2f776911332a0fea819064421830e592b55f32c4a6262918700841fc5c32-private.pem.key"
+PATH_TO_ROOT = "/Users/vsenger/Documents/minecraft-iot/AmazonRootCA1.pem"
 MESSAGE = "Hello World"
 TOPIC = "test/testing"
 RANGE = 20
@@ -139,7 +139,7 @@ if __name__ == '__main__':
         print('Highlighting all labels that have a bounding box')
 
     client = boto3.client('rekognition')
-    cap = cv2.VideoCapture(2)
+    cap = cv2.VideoCapture(1)
 
     frame_skip = 5
     frame_count = 0
@@ -179,26 +179,26 @@ if __name__ == '__main__':
                     cf = label_is_present_confidence(labels, 'Doctor')
                     if(cf>65):
                         publish_iot('gaming/ai','{"mask" : 1}')
-                        generate_audio('Mask deteted, you can go ahead!', 'mp3/mask.mp3')
+                        #generate_audio('Mask deteted, you can go ahead!', 'mp3/mask.mp3')
                         doctor=True
                         
             elif(label_is_present(labels, 'Person') and doctor):
                 doctor=False
                 message = {"sensor" : "mask", "status" : "0"}                
                 publish_iot('gaming/ai',message)
-                generate_audio("Mask not detected, you can't go ahead!", 'mp3/nomask.mp3')
+                #generate_audio("Mask not detected, you can't go ahead!", 'mp3/nomask.mp3')
 
 
             if (label_is_present(labels, 'Person') and label_is_present(labels, 'Hat')):
                 if not protegido and label_is_present_confidence(labels, 'Hat')>90:
-                    generate_audio('Hat detected', 'mp3/helmet.mp3')
+                    #generate_audio('Hat detected', 'mp3/helmet.mp3')
                     protegido = True
                     message = {"sensor" : "helmet", "status" : "1"}
                     #ver como converter json em string e boom!
                     publish_iot('gaming/ai',json.dumps(message))
             elif (label_is_present(labels, 'Person') and protegido):
                 protegido = False
-                generate_audio('No hat detected', 'mp3/nohelmet.mp3')
+                #generate_audio('No hat detected', 'mp3/nohelmet.mp3')
                 message = {"sensor" : "helmet", "status" : "0"}
                 publish_iot('gaming/ai',json.dumps(message))
 
