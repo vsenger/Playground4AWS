@@ -139,7 +139,7 @@ if __name__ == '__main__':
         print('Highlighting all labels that have a bounding box')
 
     client = boto3.client('rekognition')
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
 
     frame_skip = 5
     frame_count = 0
